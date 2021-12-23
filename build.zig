@@ -1,8 +1,8 @@
 const std = @import("std");
 
 pub fn build(b: *std.build.Builder) void {
-    const library_name = "TEMPLATE_LIBRARY";
-    const root_src = "TEMPLATE_ROOT_SRC";
+    const library_name = "message-db";
+    const root_src = "src/message_db.zig";
 
     const mode = b.standardReleaseOptions();
 
