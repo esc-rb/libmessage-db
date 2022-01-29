@@ -4,6 +4,8 @@ pub fn build(b: *std.build.Builder) void {
     const library_name = "message-db";
     const root_src = "src/message_db.zig";
 
+    const target = b.standardTargetOptions(.{});
+
     const mode = b.standardReleaseOptions();
 
     const lib = b.addStaticLibrary(library_name, root_src);
@@ -15,10 +17,13 @@ pub fn build(b: *std.build.Builder) void {
     const update_formatting = b.step("update-formatting", "Update source formatting (zig fmt)");
     update_formatting.dependOn(&fmt.step);
 
-    var main_tests = b.addTest("test/automated.zig");
-    main_tests.addPackagePath(library_name, root_src);
-    main_tests.setBuildMode(mode);
+    var tests = b.addTest("test/automated.zig");
+    tests.setBuildMode(mode);
+    tests.setTarget(target);
+    tests.linkSystemLibrary("c");
+    tests.linkSystemLibrary("libpq");
+    tests.addPackagePath(library_name, root_src);
 
     const test_step = b.step("test", "Run library tests");
-    test_step.dependOn(&main_tests.step);
+    test_step.dependOn(&tests.step);
 }

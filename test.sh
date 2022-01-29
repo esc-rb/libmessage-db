@@ -11,7 +11,7 @@ file=${1:-test/automated.zig}
 
 (
   set -x;
-  zig test --cache-dir ./zig-cache --pkg-begin message-db src/message_db.zig $file
+  zig test -lc -lpq --verbose-cimport --cache-dir ./zig-cache --pkg-begin message-db src/message_db.zig $file
 )
 
 echo
